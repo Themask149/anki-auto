@@ -6,7 +6,7 @@ import json
 import pandas as pd
 import time
 
-username='allandela59@gmail.com'
+username=''
 password='ankitest'
 session=requests.Session()
 
