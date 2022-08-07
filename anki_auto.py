@@ -6,7 +6,7 @@ import json
 import pandas as pd
 import time
 
-username=''
+username='favar54307@galotv.com'
 password='ankitest'
 session=requests.Session()
 
@@ -29,15 +29,14 @@ def addCard(deck,type,contentList,tags=""):
     if raw_r.status_code==429:
         print("trop de requêtes !!!")
         return
-    time.sleep(0.3)
+    time.sleep(0.4)
     csrf_token= raw_r.text.split("anki.Editor(")[1].split(",")[0][1:-1]
     raw_r=session.get("https://ankiuser.net/edit/getAddInfo",verify=False)
     if raw_r.status_code==429:
         print("trop de requêtes !!!")
-    time.sleep(0.3)
+    time.sleep(0.4)
     infos=json.loads(raw_r.text)
     if type=="Basic":
-        time.sleep(1)
         mid=infos["notetypes"][0]["id"]
         deckid=[d for d in infos['decks'] if d['name']==deck]
         if len(deckid)==0:
@@ -56,7 +55,7 @@ def addCard(deck,type,contentList,tags=""):
         else:
             print("Erreur d'ajout dans "+ deck)
             print(ajout.text)
-        time.sleep(0.3)
+        time.sleep(0.4)
 
 def getListDecks():
     raw_r=session.get("https://ankiweb.net/decks/")
@@ -67,11 +66,12 @@ def addFromExcel(file):
     decks=getListDecks()
     questions = pd.read_excel(file)
     nbq= questions.shape[0]
+    print(questions)
     for i in range(nbq):
-        theme= questions._get_value(i,0,takeable=True)
+        theme= questions._get_value(i,0,takeable=True).strip()
         if theme not in decks:
             createDeck(theme)
-            time.sleep(0.3)
+            time.sleep(0.4)
         card=[]
         card.append(questions._get_value(i,1,takeable=True))
         card.append(questions._get_value(i,2,takeable=True))
@@ -79,7 +79,7 @@ def addFromExcel(file):
         addCard(theme,"Basic",card)
 
 connection(username,password)
-addFromExcel('ForAllan.xlsx')
+addFromExcel('608TRY.xlsx')
 
 
 
